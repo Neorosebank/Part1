@@ -1,0 +1,112 @@
+static void Main(string[] args)
+namespace RecipeApp
+{
+    // Class to represent an ingredient
+    class Ingredient
+    {
+        public string Name { get; set; }
+        public double Quantity { get; set; }
+        public string Unit { get; set; }
+    }
+
+    // Class to represent a step in the recipe
+    class Step
+    {
+        public string Description { get; set; }
+    }
+
+    class Program
+    {
+        static Ingredient[] ingredients;
+        static Step[] steps;
+        static double scale = 1.0;
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to the Recipe App!");
+
+            // Getting the number of ingredients from the user
+            Console.Write("Enter the number of ingredients: ");
+            int numIngredients = int.Parse(Console.ReadLine());
+            ingredients = new Ingredient[numIngredients];
+
+            // Getting details for each ingredient from the user
+            for (int i = 0; i < numIngredients; i++)
+            {
+                var ingredient = new Ingredient();
+                Console.Write("Enter ingredient name: ");
+                ingredient.Name = Console.ReadLine();
+                Console.Write("Enter quantity: ");
+                ingredient.Quantity = double.Parse(Console.ReadLine());
+                Console.Write("Enter unit of measurement: ");
+                ingredient.Unit = Console.ReadLine();
+
+                ingredients[i] = ingredient;
+            }
+
+            // Getting the number of steps from the user
+            Console.Write("Enter the number of steps: ");
+            int numSteps = int.Parse(Console.ReadLine());
+            steps = new Step[numSteps];
+
+            // Getting details for each step from the user
+            for (int i = 0; i < numSteps; i++)
+            {
+                var step = new Step();
+                Console.Write("Enter step description: ");
+                step.Description = Console.ReadLine();
+
+                steps[i] = step;
+            }
+
+            // Displaying the recipe to the user
+            DisplayRecipe();
+
+            string input;
+            do
+            {
+                // Providing options for the user to scale, reset, clear, or exit
+                Console.WriteLine("\nEnter 'scale', 'reset', 'clear', or 'exit': ");
+                input = Console.ReadLine();
+
+                if (input == "scale")
+                {
+                    // Scaling the recipe quantities based on user input
+                    Console.Write("Enter scale factor (0.5, 2, 3): ");
+                    scale = double.Parse(Console.ReadLine());
+                    DisplayRecipe();
+                }
+                else if (input == "reset")
+                {
+                    // Resetting the quantities to the original values
+                    scale = 1.0;
+                    DisplayRecipe();
+                }
+                else if (input == "clear")
+                {
+                    // Clearing all data to enter a new recipe
+                    Console.Clear();
+                    Main(args);
+                }
+            } while (input != "exit");
+        }
+
+        // Method to display the recipe to the user
+        static void DisplayRecipe()
+        {
+            Console.WriteLine("Recipe:");
+            foreach (var ingredient in ingredients)
+            {
+                // Displaying scaled ingredient quantities based on the scale factor
+                Console.WriteLine($"{ingredient.Quantity * scale} {ingredient.Unit} of {ingredient.Name}");
+            }
+
+            Console.WriteLine("\nSteps:");
+            for (int i = 0; i < steps.Length; i++)
+            {
+                // Displaying each step in the recipe
+                Console.WriteLine($"{i + 1}. {steps[i].Description}");
+            }
+        }
+    }
+}
